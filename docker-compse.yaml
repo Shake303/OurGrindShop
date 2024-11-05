@@ -50,20 +50,6 @@ services:
     networks:
       - backend
 
-  node-api:
-    image: node:latest
-    container_name: node-api
-    working_dir: /app
-    volumes:
-      - ./app:/app
-    command: "node index.js"  # Replace 'index.js' with your entrypoint if different
-    depends_on:
-      - mysql-testdb
-      - nginx-server
-      - adminer
-    networks:
-      - backend
-
 networks:
   backend:
     driver: bridge

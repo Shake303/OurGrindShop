@@ -31,7 +31,9 @@ services:
     image: nginx:latest
     container_name: nginx-server
     depends_on:
-      mysql-testdb:
+      mysql-proddb:
+        condition: service_healthy
+      mysql-auftdb:
         condition: service_healthy
     ports:
       - "80:80"

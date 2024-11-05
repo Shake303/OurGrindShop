@@ -9,7 +9,7 @@ services:
     networks:
       - backend
     ports:
-      - "3306:3306"  # Expose MySQL on default port
+      - "3306:3308"  # Expose MySQL on default port
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

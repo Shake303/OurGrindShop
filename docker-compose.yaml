@@ -1,4 +1,3 @@
-
 services:
   
   mysql-proddb:
@@ -9,6 +8,8 @@ services:
       MYSQL_DATABASE: prodDb
     networks:
       - backend
+    ports:
+      - "3306:3306"  # Expose MySQL on default port
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -22,6 +23,8 @@ services:
       MYSQL_DATABASE: auftDb
     networks:
       - backend
+    ports:
+      - "3307:3306"  # Map MySQL container port 3306 to host port 3307
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -61,7 +64,7 @@ services:
     environment:
       - TZ=Europe/Berlin
     ports:
-      - 9091:9091
+      - "9091:9091"
 
 networks:
   backend:

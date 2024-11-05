@@ -7,9 +7,9 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: prodDb
     networks:
-      - backend
+      - proddb_net  # Unique network for this container
     ports:
-      - "3306:3308"  # Expose MySQL on default port
+      - "3306:3306"  # Expose on 3306 for mysql-proddb
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -22,9 +22,9 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: auftDb
     networks:
-      - backend
+      - auftdb_net  # Unique network for this container
     ports:
-      - "3307:3306"  # Map MySQL container port 3306 to host port 3307
+      - "3307:3306"  # Expose on 3307 for mysql-auftdb
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -41,7 +41,8 @@ services:
     ports:
       - "80:80"
     networks:
-      - backend
+      - proddb_net
+      - auftdb_net
 
   adminer:
     image: adminer:latest
@@ -54,7 +55,8 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - backend
+      - proddb_net
+      - auftdb_net
   
   authelia:
     image: authelia/authelia:latest
@@ -67,5 +69,7 @@ services:
       - "9091:9091"
 
 networks:
-  backend:
+  proddb_net:
+    driver: bridge
+  auftdb_net:
     driver: bridge

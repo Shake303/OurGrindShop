@@ -9,7 +9,7 @@ services:
     networks:
       - proddb_net  # Unique network for this container
     ports:
-      - "3306:3306"  # Expose on 3306 for mysql-proddb
+      - "3306:3308"  # Expose on 3306 for mysql-proddb
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

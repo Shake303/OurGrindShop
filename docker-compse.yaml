@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  
+  mysql-proddb:
+    image: mysql:latest
+    container_name: mysql-proddb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: prodDb
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 3
+
+  mysql-auftdb:
+    image: mysql:latest
+    container_name: mysql-auftdb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: auftDb
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 3
+
+  nginx-server:
+    image: nginx:latest
+    container_name: nginx-server
+    depends_on:
+      mysql-testdb:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    networks:
+      - backend
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    depends_on:
+      mysql-testdb:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+  node-api:
+    image: node:latest
+    container_name: node-api
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    command: "node index.js"  # Replace 'index.js' with your entrypoint if different
+    depends_on:
+      - mysql-testdb
+      - nginx-server
+      - adminer
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

@@ -24,7 +24,7 @@ services:
     networks:
       - auftdb_net  # Unique network for this container
     ports:
-      - "3307:3306"  # Expose on 3307 for mysql-auftdb
+      - "3306:3307"  # Expose on 3307 for mysql-auftdb
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

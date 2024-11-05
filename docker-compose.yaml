@@ -44,7 +44,9 @@ services:
     image: adminer:latest
     container_name: adminer
     depends_on:
-      mysql-testdb:
+      mysql-proddb:
+        condition: service_healthy
+      mysql-auftdb:
         condition: service_healthy
     ports:
       - "8080:8080"
